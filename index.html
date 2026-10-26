@@ -43,7 +43,8 @@ code{font-family:var(--mono);font-size:13.5px;color:rgba(236,234,229,.85)}
 
 /* ---- chrome ---- */
 nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:20px;
-  padding:22px var(--pad-r);font-family:var(--mono);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase}
+  padding:22px var(--pad-r);font-family:var(--mono);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;
+  background:var(--bg);border-bottom:1px solid var(--line)}
 nav .brand{font-weight:500}
 .nav-links{display:flex;gap:26px}
 .nav-links a{color:rgba(236,234,229,.55);transition:color .2s ease}
@@ -336,7 +337,7 @@ footer{padding:26px var(--pad-r) 26px var(--pad-l);display:flex;flex-wrap:wrap;g
 
       <form class="ner-form" id="nerForm">
         <label for="nerInput">Try your own text</label>
-        <textarea id="nerInput" maxlength="2000" required placeholder="Email jane.doe@example.com or call 555-201-3344 about the lease at 42 Elm St."></textarea>
+        <textarea id="nerInput" maxlength="2000" placeholder="Email jane.doe@example.com or call 555-201-3344 about the lease at 42 Elm St."></textarea>
         <div class="ner-row">
           <button class="btn btn-solid" type="submit" id="nerBtn">Run the model</button>
           <span class="ner-status" id="nerStatus" role="status">Sample sentence above. Your text goes to the live API.</span>
@@ -779,8 +780,9 @@ function setStatus(msg, err) {
 
 form.addEventListener('submit', async (ev) => {
   ev.preventDefault();
-  const text = input.value.trim();
-  if (!text) return;
+  // empty box runs the placeholder example, shown in the box so it's clear what ran
+  const text = input.value.trim() || input.placeholder;
+  input.value = text;
   stopAuto();
   runBtn.disabled = true;
   setStatus('Running the model…');
